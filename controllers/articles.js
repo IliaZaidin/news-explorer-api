@@ -16,7 +16,8 @@ const getArticles = async (req, res, next) => {
 
 const deleteArticle = async (req, res, next) => {
   try {
-    const article = await Article.findById(req.params.articleId);
+    const article = await Article.findById(req.params.articleId).select('+owner');
+    console.log(article.owner.toString());
     if (!article) {
       throw new NotFoundError('Article ID not found');
     } else if (req.user._id !== article.owner.toString()) {
