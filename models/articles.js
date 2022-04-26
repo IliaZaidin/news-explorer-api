@@ -28,7 +28,7 @@ const articleSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator(v) {
-          return validator.isURL(v);;
+          return validator.isURL(v);
         },
         message: 'Not a valid URL',
       },

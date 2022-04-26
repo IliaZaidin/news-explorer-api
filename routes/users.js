@@ -1,6 +1,5 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
-const validateURL = require('../utils/validateURL');
 
 const userRouter = express.Router();
 
