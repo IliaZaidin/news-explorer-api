@@ -11,7 +11,6 @@ const { DB_ADDRESS } = require('./utils/consts');
 const { NotFoundError } = require('./middlewares/notFoundError');
 const { createUser, login } = require('./controllers/users');
 const { authorize } = require('./middlewares/auth');
-const validateURL = require('./utils/validateURL');
 
 require('dotenv').config();
 

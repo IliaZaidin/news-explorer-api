@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const { UnauthorizedError } = require('../middlewares/unauthorizedError');
-const { NotFoundError } = require('../middlewares/notFoundError');
 
 const createUser = async (req, res, next) => {
   try {
@@ -53,7 +52,6 @@ const getCurrentUser = async (req, res, next) => {
     next(error);
   }
 };
-
 
 module.exports = {
   createUser, login, getCurrentUser,
