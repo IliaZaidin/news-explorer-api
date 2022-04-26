@@ -15,7 +15,8 @@ const authorize = (req, res, next) => {
     if (!payload) {
       throw new AccessDeniedError('Access denied');
     }
-    req.user = payload; // adds user{ _id: ''}
+    req.user = payload; // adds user
+    console.log(payload)
     next();
   } catch (error) {
     next(error);

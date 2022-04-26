@@ -40,10 +40,8 @@ const login = async (req, res, next) => {
 
 const getCurrentUser = async (req, res, next) => {
   try {
-    const token = req.headers.authorization.replace('Bearer ', '');
-    const payload = await jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
-    const user = await User.findById(payload._id);
-    res.status(200).send(user.email, user.name);
+    const user = await User.findById(req.user._id);
+    res.status(200).send(user);
   } catch (error) {
     if (error.name === 'CastError') {
       error.status = 400;
