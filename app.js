@@ -7,23 +7,24 @@ const { celebrate, Joi, errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const indexRouter = require('./routes/index');
-const { DB_ADDRESS } = require('./utils/consts');
-const { NotFoundError } = require('./middlewares/notFoundError');
+const NotFoundError = require('./middlewares/notFoundError');
 const { createUser, login } = require('./controllers/users');
 const { authorize } = require('./middlewares/auth');
+const limiter = require('./utils/rateLimiter');
+const handleErrors = require('./middlewares/handleErrors');
 
 require('dotenv').config();
 
-const { PORT = 3000 } = process.env;
+const { DB_ADDRESS } = process.env;
+const { PORT } = process.env;
 const app = express();
 
 mongoose.connect(DB_ADDRESS);
 
 app.use(express.json());
 app.use(helmet());
-
+app.use(limiter);
 app.use(requestLogger);
-
 app.use(cors());
 app.options('*', cors());
 
@@ -63,14 +64,7 @@ app.get('*', () => {
 
 app.use(errorLogger);
 app.use(errors());
-app.use((err, req, res, next) => {
-  if (!res.statusCode || !res.message) {
-    res.status(500).send({ message: 'An error has occurred on the server' });
-  } else {
-    res.status(err.statusCode).send({ message: err.message });
-  }
-  next();
-});
+app.use(handleErrors);
 
 app.listen(PORT, () => {
   console.log(`\u001b[1;33m\n********************************\nApp is listening at port ${PORT}\u001b[0m`);

@@ -1,7 +1,9 @@
+const { ERROR_INVALID_DATA } = require('../utils/consts');
+
 class InvalidDataError extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 400;
+    this.statusCode = ERROR_INVALID_DATA;
   }
 }
 

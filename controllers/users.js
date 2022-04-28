@@ -3,7 +3,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
-const { UnauthorizedError } = require('../middlewares/unauthorizedError');
+const UnauthorizedError = require('../middlewares/unauthorizedError');
 
 const createUser = async (req, res, next) => {
   try {
@@ -12,7 +12,7 @@ const createUser = async (req, res, next) => {
       email: req.body.email,
       password: hash,
     });
-    res.status(201).send(user);
+    res.status(201).send({ email: user.email, name: user.name });
   } catch (error) {
     if (error.name === 'ValidationError') {
       error.status = 400;
@@ -26,15 +26,19 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select('+password');
-    const passwordCheck = await bcrypt.compare(password, user.password);
-    if (!user || !passwordCheck) {
+    if (!user) {
       throw new UnauthorizedError('Wrong email or password');
     } else {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
-      res.status(200).send({ token });
+      const passwordCheck = await bcrypt.compare(password, user.password);
+      if (!passwordCheck) {
+        throw new UnauthorizedError('Wrong email or password');
+      } else {
+        const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+        res.status(200).send({ token });
+      }
     }
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 

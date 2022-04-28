@@ -3,7 +3,6 @@ const ERROR_UNAUTHORIZED = 401;
 const ERROR_ACCESS_DENIED = 403;
 const ERROR_NOT_FOUND = 404;
 const ERROR_DEFAULT = 500;
-const DB_ADDRESS = 'mongodb://localhost:27017/newsdb';
 
 module.exports = {
   ERROR_INVALID_DATA,
@@ -11,5 +10,4 @@ module.exports = {
   ERROR_ACCESS_DENIED,
   ERROR_NOT_FOUND,
   ERROR_DEFAULT,
-  DB_ADDRESS,
 };

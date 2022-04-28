@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 const Article = require('../models/articles');
-const { NotFoundError } = require('../middlewares/notFoundError');
-const { Unauthorized } = require('../middlewares/unauthorizedError');
+const NotFoundError = require('../middlewares/notFoundError');
+const Unauthorized = require('../middlewares/unauthorizedError');
 
 const getArticles = async (req, res, next) => {
   try {
-    const articles = await Article.find({});
+    const articles = await Article.find({ owner: req.user._id });
     if (articles.length === 0) {
       throw new NotFoundError('No articles found on server');
     } else res.send(articles);
@@ -17,7 +17,6 @@ const getArticles = async (req, res, next) => {
 const deleteArticle = async (req, res, next) => {
   try {
     const article = await Article.findById(req.params.articleId).select('+owner');
-    console.log(article.owner.toString());
     if (!article) {
       throw new NotFoundError('Article ID not found');
     } else if (req.user._id !== article.owner.toString()) {
