@@ -1,2 +1,2 @@
 # Practicum Final Project Backend
-www.ilia-final.students.nomoreparties.sbs
+(Link to page)[https://www.news.zaidin.online/]
