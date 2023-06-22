@@ -1,2 +1,2 @@
 # Practicum Final Project Backend
-(Link to page)[https://www.news.zaidin.online/]
+[Link to page](https://www.news.zaidin.online/)
